@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="{$Think.config.DEFAULT_LANG}">
+    <head>
+	<meta charset="utf-8">
+	<title>{$SystemInfo['site']}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="{$SystemInfo['description']}">
+	<meta name="keywords" content="{$SystemInfo['keywords']}">
+	<meta name="author" content="Ghostry">
+
+	<!-- The styles -->
+	<link href="__PUBLIC__/Lib/Bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="__PUBLIC__/Lib/Bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+	<link href="__PUBLIC__/Theme/{$Think.config.DEFAULT_THEME}/{$Think.MODULE_NAME}/Css/css.css" rel="stylesheet">
+	<link href="__PUBLIC__/Lib/Select2/css/select2.min.css" rel="stylesheet">
+	<link href="__PUBLIC__/Lib/Kindeditor/themes/qq/qq.css" rel="stylesheet">
+	<link href="__PUBLIC__/Lib/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- The fav icon -->
+	<link rel="shortcut icon" href="__PUBLIC__/Theme/{$Think.config.DEFAULT_THEME}/{$Think.MODULE_NAME}/Img/favicon.ico">
+
+	<script src="__PUBLIC__/Lib/Jquery/jquery-2.1.4.min.js"></script>
+    </head>
+
+    <body>
+	<div class="container" style="width: 100%">
+	    <div class="row">
+		<nav class="navbar navbar-default" role="navigation">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			    <span class="sr-only">Toggle navigation</span>
+			    <span class="icon-bar"></span>
+			    <span class="icon-bar"></span>
+			    <span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="{:U('Home/Index/index')}" target="_blank">{$SystemInfo['site']}</a>
+		    </div>
+
+		    <!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+			    ^(volist name='menu' id='v')^		
+			    <li class="{$v['controller']==CONTROLLER_NAME?'active':''}"><a href="{:U($v['controller'].'/'.$v['action'])}">{$v.name}</a></li>	
+			    ^(/volist)^
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">{:session('admin_nickname')} <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+				    <li><a href="{:U('System/cache')}">清理缓存</a></li>
+				    <li class="divider"></li>
+				    <li><a href="{:U('admin/changePassword')}">修改密码</a></li>
+				    <li><a href="{:U('Admin/logout')}">注销</a></li>
+				</ul>
+			    </li>
+			</ul>
+		    </div><!-- /.navbar-collapse -->
+		</nav>
+	    </div>
+	    <div class="row" id='body'>
+		<div class="col-md-2">
+		    <ul class="nav nav-pills nav-stacked">
+			^(volist name="submenu" id='v')^
+			<li class="{$v['action']==ACTION_NAME?'active':''}"><a href="{:U(CONTROLLER_NAME.'/'.$v['action'])}">{$v.name}</a></li>
+			^(/volist)^
+		    </ul>
+		</div>
+		<div class="col-md-10">

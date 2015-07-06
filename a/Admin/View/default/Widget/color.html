@@ -1,0 +1,53 @@
+<div class="form-group">
+    <label for="{$name}" class="{$inline?'':'col-sm-2 control-label'}">{$text}</label>
+    ^(if condition='$inline neq 1')^
+    <div class="col-sm-6">
+        ^(/if)^
+        <div class="input-group">
+            <input type="text" id="{$name}val" name="{$name}" class="form-control {$class}" placeholder="请选择{$text}" aria-describedby="{$name}" value="{$info[$name]?$info[$name]:$_POST[$name]}" {$disabled?'disabled="1"':''}>
+            <span class="input-group-addon " id="{$name}"><span class="glyphicon glyphicon-asterisk" ></span></span>
+        </div>
+        ^(if condition='$inline neq 1')^
+    </div>
+    <div class="col-sm-4">
+        <span class="info help-block"></span>
+    </div>
+    ^(/if)^
+</div>
+<link href="__PUBLIC__/Lib/Kindeditor/themes/default/default.css" rel="stylesheet">
+<script src="__PUBLIC__/Lib/Kindeditor/kindeditor-all-min.js"></script>
+<script>
+    KindEditor.ready(function (K) {
+        var colorpicker;
+        var colorpickershow=function (e) {
+            e.stopPropagation();
+            if (colorpicker) {
+                colorpicker.remove();
+                colorpicker = null;
+                return;
+            }
+            var colorpickerPos = K('#{$name}').pos();
+            colorpicker = K.colorpicker({
+                x: colorpickerPos.x-100,
+                y: colorpickerPos.y + K('#{$name}').height(),
+                z: 19811214,
+                selectedColor: 'default',
+                noColor: '无颜色',
+                click: function (color) {
+                    K('#{$name}val').val(color);
+                    colorpicker.remove();
+                    colorpicker = null;
+                }
+            });
+        };
+        var colorpickerhide=function () {
+            if (colorpicker) {
+                colorpicker.remove();
+                colorpicker = null;
+            }
+        };
+        K('#{$name}').bind('click',colorpickershow );
+        K('#{$name}val').bind('focus',colorpickershow );
+        K(document).click(colorpickerhide);
+    });
+</script>

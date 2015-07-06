@@ -1,0 +1,46 @@
+^(include file="Public/header" /)^
+
+
+<div class="panel panel-default">
+    ^(include file="Public/breadcrumb" /)^
+    <div class="panel-body">
+	<table class='table datatable'>
+	    <thead>
+		<tr>
+		    <th>ID</th>
+		    <th>登陆账户</th>
+		    <th class="hidden-xs">显示名称</th>
+		    <th>所属组</th>
+		    <th>状态</th>
+		    <th class="hidden-xs">最后登陆</th>
+		    <th>操作</th>
+		</tr>
+	    </thead>
+	    <tbody>
+		^(volist name="list" id="vo" key="k")^
+		<tr>
+		    <td>{$vo.id}</td>
+		    <td>{$vo.email}</td>
+		    <td class="hidden-xs">{$vo.nickname}</td>
+		    <td>{$role[$vo['role']]}</td>
+		    <td>
+			^(if condition="$vo.status gt 0 ")^
+			<span class="label label-success">启用</span>
+			^(else /)^
+			<span class="label label-danger">禁用</span>
+			^(/if)^
+		    </td>
+		    <td class="hidden-xs">{$vo.logintime}</td>
+		    <td>
+			<a class="btn btn-primary" href="{:U('Admin/edit',array('id'=>$vo['id']))}"><i class="glyphicon glyphicon-edit"></i> 编辑</a>
+			<a class="btn btn-danger" href="{:U('Admin/del',array('id'=>$vo['id']))}"><i class="glyphicon glyphicon-remove"></i> 删除</a>
+		    </td>
+		</tr>
+		^(/volist)^
+	    </tbody>
+	</table>
+    </div>
+</div>
+
+
+^(include file="Public/footer" /)^

@@ -1,0 +1,16 @@
+<div class="form-group">
+    <div class="{$inline?'':'col-sm-offset-2 col-sm-10'}">
+	    ^(volist name='data' id='v')^
+	    <div class="checkbox checkbox-inline">
+	    <label>		
+		<button type="{$v[3]?$v[3]:'button'}" name="{$v[0]}" id='{$v[0]}' class="btn {$v[2]?$v[2]:'btn-default'}" {$v[4]?'disabled="1"':''}>{$v[1]}</button>
+	    </label>
+	</div>
+	    ^(/volist)^
+    </div>
+    ^(if condition='$inline neq 1')^
+    <div class="col-sm-4">
+	<span class="info help-block"></span>
+    </div>
+    ^(/if)^
+</div>

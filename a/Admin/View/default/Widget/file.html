@@ -1,0 +1,71 @@
+<div class="form-group">
+    <label for="{$name}" class="col-sm-2 control-label">{$text}</label>
+    <div class="col-sm-6">
+        <input type="text" 
+               class="form-control {$class}" 
+               id="{$name}" 
+               placeholder="请上传{$text}" 
+               name="{$name}" 
+               value="{$info[$name]?$info[$name]:$_POST[$name]}" 
+               readonly="1" 
+               {$disabled?'disabled="1"':''}               
+               {$required?'required':''}
+               ^(volist name="data" id="vo" key="k")^
+               data-{$vo.name}="{$vo.value}"
+               ^(/volist)^
+               >
+               ^(if condition='$img neq ""')^
+               <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">你上传的图片</div>
+                    <div class="panel-body">
+                        <img id="help{$name}" alt="你上传的图片" class="img-thumbnail" src="^(if condition='$info[$name] neq ""')^{$info[$name]}^(else /)^__PUBLIC__/Theme/{$Think[config][DEFAULT_THEME]}/$Think[MODULE_NAME]/Img/deng.jpg^(/if)^" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">示例图片</div>
+                    <div class="panel-body">
+                        <img src="{$img}" alt="示例图片" class="img-thumbnail">
+                    </div>
+                </div>
+            </div>
+        </div>
+        ^(/if)^
+    </div>
+    <div class="col-sm-4">
+        <input type="button" id="upload{$name}" value="Upload" />
+        <span class="info help-block" style="  display: inline-block;">{$help}</span>
+    </div>
+</div>
+<link href="__PUBLIC__/Lib/Kindeditor/themes/default/default.css" rel="stylesheet">
+<script src="__PUBLIC__/Lib/Kindeditor/kindeditor-all-min.js"></script>
+<script>
+    KindEditor.ready(function (K) {
+        var uploadbutton = K.uploadbutton({
+            button: K('#upload{$name}')[0],
+            fieldName: 'UploadFile',
+            url: '{:U("Editer/upload",array('dir'=>$type))}',
+            afterUpload: function (data) {
+                if (data.error === 0) {
+                    var url = K.formatUrl(data.url, 'absolute');
+                    K('#{$name}').val(url);
+                    //K('#help{$name}').html('<a href="' + url + '" target="_blank">点击查看</a>');
+                    $('#help{$name}').attr('src', url );
+                } else {
+                    alert(data.message);
+                }
+            },
+            afterError: function (str) {
+                alert('自定义错误信息: ' + str);
+            }
+        });
+        uploadbutton.fileBox.change(function (e) {
+            uploadbutton.submit();
+        });
+        $('.ke-form').css('width','72px');
+        $('.ke-button').val('点击上传');
+    });
+</script>

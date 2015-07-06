@@ -1,0 +1,9 @@
+<div class="form-group">
+    <label for="{$name}" class="col-sm-2 control-label">{$text}</label>
+    <div class="col-sm-6">
+	<textarea class="form-control {$class}" id="{$name}" placeholder="请输入{$text}" name="{$name}" {$disabled?'disabled="1"':''} {$class?'style=" height: 500px"':''}>{$info[$name]?$info[$name]:$_POST[$name]}</textarea>
+    </div>
+    <div class="col-sm-4">
+	<span class="info help-block"></span>
+    </div>
+</div>

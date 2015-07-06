@@ -1,0 +1,110 @@
+<div class="form-group">
+    <label for="{$name}" class="{$inline?'':'col-sm-2 control-label'}"{$inline?' style="display: block;"':''}>{$text}</label>
+    <div class="col-sm-{$inline?'4':'2'}">
+        <select class="form-control {$class}" name="{$name.0}" id='{$name.0}' {$disabled?'disabled="1"':''} {$required?'required':''}>
+            <option value='0'>--省--</option>
+            ^(volist name='province' id='v')^
+            <option value='{$v[0]}' <?php echo in_array($v[0],explode(',',$info[$name[0]]))?'selected="1"':'';?>>{$v[1]?$v[1]:$v[0]}</option>
+            ^(/volist)^
+        </select>
+     </div>
+    <div class="col-sm-{$inline?'4':'2'}">
+        <select class="form-control {$class}" name="{$name.1}" id='{$name.1}' {$disabled?'disabled="1"':''}{$required?' required':''}>
+            <option value='0'>--市--</option>
+        </select>
+    </div>
+    <div class="col-sm-{$inline?'4':'2'}">
+        <select class="form-control {$class}" name="{$name.2}" id='{$name.2}' {$disabled?'disabled="1"':''}{$required?' required':''}>
+            <option value='0'>-区/县-</option>
+        </select>
+      </div>
+    ^(if condition='$inline neq 1')^
+    <div class="col-sm-4">
+        <span class="info help-block">{$help}</span>
+    </div>    
+    ^(/if)^
+</div>
+
+<script>
+    $(document).ready(function () {
+        var province = $('#{$name.0}').val();
+        var {$name.1}_info={$info[$name[1]]|default=0};
+        var {$name.2}_info={$info[$name[2]]|default=0};
+        $('#{$name.1}>option').attr('value',{$name.1}_info);
+        $('#{$name.2}>option').attr('value',{$name.2}_info);
+        if({$name.1}_info>0 ){
+            $.get('{:U("Agent/get_city")}', {
+                    id: province
+            }, function (data) {
+                    $('#{$name.1}').html('');
+                    $('#{$name.1}').append("<option value='0'>--市--</option>");
+                    for (xx in data)
+                    {
+                        $('#{$name.1}').append("<option value='" + data[xx][0] + "'>" + data[xx][1] + "</option>");
+                    }
+                    $('#{$name.1}').val({$name.1}_info);
+            });
+                $.get('{:U("Agent/get_district")}', {
+                    id: {$name.1}_info
+                }, function (data) {
+                    $('#{$name.2}').html('');
+                    $('#{$name.2}').append("<option value='0'>-区/县-</option>");
+                    for (xx in data)
+                    {
+                        $('#{$name.2}').append("<option value='" + data[xx][0] + "'>" + data[xx][1] + "</option>");
+                    }
+                    $('#{$name.2}').val({$name.2}_info);
+                });
+        }
+        $('#{$name.0}').change(function () {
+            var province = $('#{$name.0}').val();
+            if (province != 0) {
+                $.get('{:U("Agent/get_city")}', {
+                    id: province
+                }, function (data) {
+                    $('#{$name.1}').html('');
+                    $('#{$name.1}').append("<option value='0'>--市--</option>");
+                    for (xx in data)
+                    {
+                        $('#{$name.1}').append("<option value='" + data[xx][0] + "'>" + data[xx][1] + "</option>");
+                    }
+                    $('#{$name.2}').html('');
+                    $('#{$name.2}').append("<option value='0'>-区/县-</option>");
+                });
+            }else{
+                    $('#{$name.1}').html('');
+                    $('#{$name.1}').append("<option value='0'>--市--</option>");
+                    $('#{$name.2}').html('');
+                    $('#{$name.2}').append("<option value='0'>-区/县-</option>");
+                
+            }
+        });
+        $('#{$name.1}').change(function () {
+            var city = $(this).val();
+            if (city != 0) {
+                $.get('{:U("Agent/get_district")}', {
+                    id: city
+                }, function (data) {
+                    $('#{$name.2}').html('');
+                    $('#{$name.2}').append("<option value='0'>-区/县-</option>");
+                    for (xx in data)
+                    {
+                        $('#{$name.2}').append("<option value='" + data[xx][0] + "'>" + data[xx][1] + "</option>");
+                    }
+                });
+            }else{
+                    $('#{$name.2}').html('');
+                    $('#{$name.2}').append("<option value='0'>-区/县-</option>");
+            }
+        });        
+    ^(if condition='$inline eq 1')^
+    var w1=$('#{$name.0}').width();
+    $('#{$name.1}').width(w1);
+    $('#{$name.2}').width(w1);
+    $('#{$name.0}').parent().width(w1).css('margin-left','-15px');
+    $('#{$name.1}').parent().width(w1);
+    $('#{$name.2}').parent().width(w1);
+    $('#{$name.0}').parent().parent().width(w1*3+82);
+    ^(/if)^
+    });
+</script>

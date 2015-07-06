@@ -1,0 +1,24 @@
+<div class="form-group">
+    <label for="{$name}" class="{$inline?'':'col-sm-2 control-label'}">{$text}</label>
+    ^(if condition='$inline neq 1')^
+    <div class="col-sm-6">
+	^(/if)^
+	<input type="{$type|default='text'}" 
+               class="form-control {$class}" 
+               id="{$name}" 
+               placeholder="请输入{$text}" 
+               name="{$name}" 
+               value="{$info[$name]?$info[$name]:$_POST[$name]}" 
+               {$disabled?'disabled="1"':''}
+               {$required?'required':''}
+               ^(volist name="data" id="vo" key="k")^
+               data-{$vo.name}="{$vo.value}"
+               ^(/volist)^
+               >
+	^(if condition='$inline neq 1')^
+    </div>
+    <div class="col-sm-4">
+	<span class="info help-block" for="{$name}">{$help}</span>
+    </div>
+    ^(/if)^
+</div>

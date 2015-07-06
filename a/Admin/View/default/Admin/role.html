@@ -1,0 +1,44 @@
+^(include file="Public/header" /)^
+
+
+<div class="panel panel-default">
+    ^(include file="Public/breadcrumb" /)^
+    <div class="panel-body">
+	<table class='table datatable'>
+	    <thead>
+		<tr>
+		    <th>ID</th>
+		    <th>名称</th>
+		    <th>权限组</th>
+		    <th>排序</th>
+		    <th>操作</th>
+		</tr>
+	    </thead>
+	    <tbody>
+		^(volist name="list" id="vo" key="k")^
+		<tr>
+		    <td>{$vo.id}</td>
+		    <td>
+			^(if condition="$vo.cid eq 0 ")^
+			<a href="{:U('Admin/role',array('cid'=>$vo['id']))}">{$vo.name}</a>
+			^(else /)^
+			{$vo.name}
+			^(/if)^
+		    </td>
+		    <td><?php $admins=D('AdminRole')->getRoleName($vo['admins']);
+			foreach($admins as $admin){
+			    echo '<span class="label label-success">'.$admin['name'].'</span> ';
+			}?></td>
+		    <td>{$vo.px}</td>
+		    <td>
+			<a class="btn btn-primary" href="{:U('Admin/redit',array('id'=>$vo['id']))}"><i class="glyphicon glyphicon-edit"></i> 编辑</a>
+		    </td>
+		</tr>
+		^(/volist)^
+	    </tbody>
+	</table>
+    </div>
+</div>
+
+
+^(include file="Public/footer" /)^

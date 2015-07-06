@@ -1,0 +1,17 @@
+<div class="form-group">
+    <label for="{$name}" class="{$inline?'':'col-sm-2 control-label'}">{$text}</label>
+    ^(if condition='$inline neq 1')^
+    <div class="col-sm-6">
+	^(/if)^
+	<select class="form-control {$class}" name="{$name}{$multiple?'[]':''}" id='{$name}' {$disabled?'disabled="1"':''} {$multiple?'multiple':''}>
+	    ^(volist name='data' id='v')^
+	    <option value='{$v[0]}' <?php echo in_array($v[0],explode(',',$info[$name]))?'selected="1"':'';?>>{$v[1]?$v[1]:$v[0]}</option>
+	    ^(/volist)^
+	</select>
+	^(if condition='$inline neq 1')^
+    </div>
+    <div class="col-sm-4">
+	<span class="info help-block"></span>
+    </div>
+    ^(/if)^
+</div>

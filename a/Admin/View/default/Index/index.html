@@ -1,0 +1,54 @@
+^(include file="Public/header" /)^
+<style type="text/css">
+@media screen and (max-width: 920px) { /*当屏幕尺寸小于600px时，应用下面的CSS样式*/
+    .table {
+	margin-bottom: 0px; 
+	font-size: 12px;
+    }
+}
+.table-480 {
+    display: none;
+}
+@media screen and (max-width: 580px) { /*当屏幕尺寸小于600px时，应用下面的CSS样式*/
+    .table {
+	display: none;
+    }
+    .table-480 {
+	display: block;
+	margin-bottom: 0px; 
+	font-size: 12px;
+    }
+    h1{
+	font-size: 24px;
+    }
+}
+</style>
+<div class="panel panel-default">
+    ^(include file="Public/breadcrumb" /)^
+    <div class="panel-body">
+	<div class="jumbotron">
+	    <h1>欢迎使用{$SystemInfo['site']}</h1>
+	    <p>&nbsp;</p>
+	    <table class='table'>
+		^(volist name="server_info" id="vo" key="k")^
+		{$k%2==1?'<tr>':''}
+		    <td  align="right">{$key}：</td>
+		    <td>{$vo}</td>
+		{$k%2==0?'</tr>':''}
+		^(/volist)^
+	    </table>
+	    <table class='table-480'>
+		^(volist name="server_info" id="vo" key="k")^
+		<tr>
+		    <td  align="right">{$key}：</td>
+		    <td>{$vo}</td>
+		</tr>
+		^(/volist)^
+	    </table>
+
+	</div>
+    </div>
+</div>
+
+
+^(include file="Public/footer" /)^

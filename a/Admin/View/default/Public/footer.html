@@ -1,0 +1,88 @@
+</div></div>
+<div class="row">
+    <footer>
+        <p class="pull-left">&copy; <a href="http://blog.ghostry.cn/" target="_blank">Ghostry</a> {:date('Y')}</p>
+        <p class="pull-right">Powered by: <a href="http://blog.ghostry.cn/">Ghostry</a></p>
+    </footer>
+</div>
+</div>
+<!-- external javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<!-- jQuery -->
+<script src="__PUBLIC__/Lib/Jquery/jquery.browser.min.js"></script>
+<script src="__PUBLIC__/Lib/Bootstrap/js/bootstrap.min.js"></script>
+<!-- library for cookie management -->
+<script src="__PUBLIC__/Lib/Jquery/jquery.cookie.js"></script>
+<!-- data table plugin -->
+<script src='__PUBLIC__/Lib/Jquery/jquery.dataTables.min.js'></script>
+<script src="__PUBLIC__/Lib/Jquery/jquery.flot.min.js"></script>
+<script src="__PUBLIC__/Lib/Jquery/jquery.flot.pie.min.js"></script>
+<script src="__PUBLIC__/Lib/Jquery/jquery.flot.stack.js"></script>
+<script src="__PUBLIC__/Lib/Jquery/jquery.flot.resize.min.js"></script>
+<!-- chart libraries end -->
+
+<!-- select or dropdown enhancer -->
+<script src="__PUBLIC__/Lib/Select2/js/select2.min.js"></script>
+<script src="__PUBLIC__/Lib/Select2/js/i18n/zh-CN.js"></script>
+<!-- plugin for gallery image view -->
+<script src="__PUBLIC__/Lib/Colorbox/jquery.colorbox-min.js"></script>
+<!-- star rating plugin -->
+<script src="__PUBLIC__/Lib/Jquery/jquery.raty.min.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="__PUBLIC__/Lib/Jquery/jquery.autogrow-textarea.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="__PUBLIC__/Lib/Jquery/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<script src="__PUBLIC__/Theme/{$Think.config.DEFAULT_THEME}/{$Think.MODULE_NAME}/Js/js.js"></script>
+
+<script src="__PUBLIC__/Lib/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="__PUBLIC__/Lib/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<script src="__PUBLIC__/Lib/Kindeditor/kindeditor-all-min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".chosen-select").select2({
+            language: "zh-CN"
+        });
+        if ($('#body div:first ul li').size() < 2) {
+            $('#body div:first').remove();
+            $('#body div:first').addClass('col-md-12').removeClass('col-md-10');
+        }
+        var editor = KindEditor.create('.kindeditor', {
+            uploadJson: '{:U("Editer/upload")}'
+        });
+        $('.btn-danger').click(function () {
+            var msg = "您真的确定要这么做吗？\n\n请确认！";
+            if (confirm(msg) == true) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+    function alertt(data) {
+        var type = arguments[1] ? arguments[1] : 1;
+        var tt = new Array();
+        tt[4] = new Array('success', '恭喜');
+        tt[1] = new Array('info', '注意');
+        tt[2] = new Array('warning', '警告');
+        tt[3] = new Array('danger', '危险');
+        var t = setTimeout("$('.alert').alert('close');", 5000);
+        return '<div class="alert alert-' + tt[type][0] + '"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + tt[type][1] + '！</strong>' + data + '</div>';
+    }
+</script>
+<div style="display: none">
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?2866d184a661820df35879dc03c43cff";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</div>
+</body>
+</html>

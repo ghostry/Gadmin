@@ -1,0 +1,41 @@
+^(include file="Public/header" /)^
+
+<div class="panel panel-default">
+    ^(include file="Public/breadcrumb" /)^
+    <div class="panel-body">
+	{:W('Form/form',array($form))}
+	<table class='table'>
+	    <thead>
+		<tr>
+		    <th>管理员</th>
+		    <th>动作</th>
+		    <th>时间</th>
+		</tr>
+	    </thead>
+	    <tbody>
+		^(volist name="list" id="vo" key="k")^
+		<tr>
+		    <td>{$vo.admin}</td>
+                    <td>{$vo.des}{$vo.tablenameCN}{$vo.value}</td>
+		     <td>{$vo.addtime}</td>
+		    </tr>
+		    ^(/volist)^
+		</tbody>
+	    </table>
+	    {$page}
+	</div>
+    </div>
+
+    <style>
+	.select2-container{
+	    display: block
+	}
+    </style>
+    <script>
+	$(document).ready(function () {
+	    $('#qingkong').click(function () {
+		window.location.href = "{:U('qingkong')}";
+	    });
+	});
+    </script>
+    ^(include file="Public/footer" /)^

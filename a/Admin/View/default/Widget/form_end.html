@@ -1,0 +1,10 @@
+<div class="form-group">
+    ^(if condition='$inline neq 1')^
+    <div class="col-sm-offset-2 col-sm-10">^(/if)^
+	<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> {$submit|default='提交'}</button>
+	^(if condition='$reset gt 0')^<button type="reset" class="btn btn-default"><i class="glyphicon glyphicon-floppy-open"></i> 重置</button>^(/if)^
+	^(if condition='$inline neq 1')^
+    </div>
+    ^(/if)^
+</div>
+</form>

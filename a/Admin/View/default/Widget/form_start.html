@@ -1,0 +1,21 @@
+^(if condition='$validate eq 1')^
+<script>
+    $(document).ready(function () {
+    $("#{$id}").validate({
+            errorElement: "em",
+            errorPlacement: function (error, element) {
+            ^(if condition = '$inline neq 1')^
+                    element.parent("div").next("div").children('span').html('');
+                    error.appendTo(element.parent("div").next("div").children('span'));
+                    ^(else /)^
+                    error.insertAfter(element);
+                    ^(/if)^
+                    },
+                            success: function (label) {
+                            label.text("正确!").addClass("success").removeClass('error');
+                            }
+                    });
+            });
+</script>
+^(/if)^
+<form class="{$inline?'form-inline':'form-horizontal'} {$class}" action="{$action}" method="{$method|default='POST'}" role="form" id="{$id}">

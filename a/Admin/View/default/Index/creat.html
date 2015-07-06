@@ -1,0 +1,20 @@
+<div class="form-group">
+    <label for="agentId" class="col-sm-2 control-label">data1</label>
+    <div class="col-sm-6">
+	<select class="form-control chosen-select" name="data1" id='data1'  >
+	    ^(volist name='data' id='v')^
+	    <option value='{$v[0]}' >{$v[1]?$v[1]:$v[0]}</option>
+	    ^(/volist)^	
+	</select>
+    </div>
+</div>
+<div class="form-group">
+    <label for="agentId" class="col-sm-2 control-label">data2</label>
+    <div class="col-sm-6">
+	<select class="form-control chosen-select" name="data2" id='data2'  >
+	    ^(volist name='data' id='v')^
+	    <option value='{$v[0]}' >{$v[1]?$v[1]:$v[0]}</option>
+	    ^(/volist)^	
+	</select>
+    </div>
+</div>
