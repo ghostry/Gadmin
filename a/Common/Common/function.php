@@ -13,19 +13,19 @@
 function delDirAndFile($path, $delDir = FALSE) {
     $handle = is_dir($path) ? opendir($path) : 0;
     if ($handle) {
-	while (false !== ( $item = readdir($handle) )) {
-	    if ($item != "." && $item != "..")
-		is_dir("$path/$item") ? delDirAndFile("$path/$item", $delDir) : unlink("$path/$item");
-	}
-	closedir($handle);
-	if ($delDir)
-	    return rmdir($path);
+        while (false !== ( $item = readdir($handle) )) {
+            if ($item != "." && $item != "..")
+                is_dir("$path/$item") ? delDirAndFile("$path/$item", $delDir) : unlink("$path/$item");
+        }
+        closedir($handle);
+        if ($delDir)
+            return rmdir($path);
     }else {
-	if (file_exists($path)) {
-	    return unlink($path);
-	} else {
-	    return FALSE;
-	}
+        if (file_exists($path)) {
+            return unlink($path);
+        } else {
+            return FALSE;
+        }
     }
 }
 
@@ -42,53 +42,61 @@ function makeDir($path) {
     return is_dir($path) or ( makeDir(dirname($path)) and @ mkdir($path, 0777));
 }
 
+/**
+ * 生成随机字符
+ */
 function getRandChar($length) {
     $str = null;
     $strPol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
     $max = strlen($strPol) - 1;
 
     for ($i = 0; $i < $length; $i++) {
-	$str.=$strPol[rand(0, $max)]; //rand($min,$max)生成介于min和max两个数之间的一个随机整数
+        $str.=$strPol[rand(0, $max)]; //rand($min,$max)生成介于min和max两个数之间的一个随机整数
     }
 
     return $str;
 }
 
+/**
+ * 上传图片
+ */
 function _UPLOADPIC($upfile, $maxsize, $updir, $newname = 'date') {
-
     if ($newname == 'date')
-	$newname = date("Ymdhis"); //使用日期做文件名
+        $newname = date("Ymdhis"); //使用日期做文件名
     $name = $upfile ["name"];
     $type = $upfile ["type"];
     $size = $upfile ["size"];
     $tmp_name = $upfile ["tmp_name"];
 
     switch ($type) {
-	case 'image/pjpeg' :
-	case 'image/jpeg' :
-	    $extend = ".jpg";
-	    break;
-	case 'image/gif' :
-	    $extend = ".gif";
-	    break;
-	case 'image/png' :
-	    $extend = ".png";
-	    break;
+        case 'image/pjpeg' :
+        case 'image/jpeg' :
+            $extend = ".jpg";
+            break;
+        case 'image/gif' :
+            $extend = ".gif";
+            break;
+        case 'image/png' :
+            $extend = ".png";
+            break;
     }
     if (empty($extend)) {
-	echo ( "警告！只能上传图片类型：GIF JPG PNG" );
-	exit();
+        echo ( "警告！只能上传图片类型：GIF JPG PNG" );
+        exit();
     }
     if ($size > $maxsize) {
-	$maxpr = $maxsize / 1000;
-	echo ( "警告！上传图片大小不能超过" . $maxpr . "K!" );
-	exit();
+        $maxpr = $maxsize / 1000;
+        echo ( "警告！上传图片大小不能超过" . $maxpr . "K!" );
+        exit();
     }
     if (move_uploaded_file($tmp_name, $updir . $newname . $extend)) {
-	return $updir . $newname . $extend;
+        return $updir . $newname . $extend;
     }
 }
 
+/**
+ * 计算宽高
+ */
 function show_pic_scal($width, $height, $picpath) {
     $imginfo = GetImageSize($picpath);
     $imgw = $imginfo [0];
@@ -99,19 +107,19 @@ function show_pic_scal($width, $height, $picpath) {
 
 
     if ($imgw > $width or $imgh > $height) {
-	if ($imgw > $imgh) {
-	    $newWidth = $width;
-	    $newHeight = round($newWidth / $ra);
-	} elseif ($imgw < $imgh) {
-	    $newHeight = $height;
-	    $newWidth = round($newHeight / $ra2);
-	} else {
-	    $newWidth = $width;
-	    $newHeight = round($newWidth / $ra);
-	}
+        if ($imgw > $imgh) {
+            $newWidth = $width;
+            $newHeight = round($newWidth / $ra);
+        } elseif ($imgw < $imgh) {
+            $newHeight = $height;
+            $newWidth = round($newHeight / $ra2);
+        } else {
+            $newWidth = $width;
+            $newHeight = round($newWidth / $ra);
+        }
     } else {
-	$newHeight = $imgh;
-	$newWidth = $imgw;
+        $newHeight = $imgh;
+        $newWidth = $imgw;
     }
     $newsize [0] = $newWidth;
     $newsize [1] = $newHeight;
@@ -119,6 +127,9 @@ function show_pic_scal($width, $height, $picpath) {
     return $newsize;
 }
 
+/**
+ * 获取图片信息
+ */
 function getImageInfo($src) {
     return getimagesize($src);
 }
@@ -131,15 +142,15 @@ function getImageInfo($src) {
 function create($src) {
     $info = getImageInfo($src);
     switch ($info[2]) {
-	case 1:
-	    $im = imagecreatefromgif($src);
-	    break;
-	case 2:
-	    $im = imagecreatefromjpeg($src);
-	    break;
-	case 3:
-	    $im = imagecreatefrompng($src);
-	    break;
+        case 1:
+            $im = imagecreatefromgif($src);
+            break;
+        case 2:
+            $im = imagecreatefromjpeg($src);
+            break;
+        case 3:
+            $im = imagecreatefrompng($src);
+            break;
     }
     return $im;
 }
@@ -166,12 +177,12 @@ function resize($src, $w, $h) {
     $per2 = round($w / $h, 2); //计算缩略图长宽比
     //计算缩放比例
     if ($per1 > $per2 || $per1 == $per2) {
-	//原图长宽比大于或者等于缩略图长宽比，则按照宽度优先
-	$per = $w / $width;
+        //原图长宽比大于或者等于缩略图长宽比，则按照宽度优先
+        $per = $w / $width;
     }
     if ($per1 < $per2) {
-	//原图长宽比小于缩略图长宽比，则按照高度优先
-	$per = $h / $height;
+        //原图长宽比小于缩略图长宽比，则按照高度优先
+        $per = $h / $height;
     }
     $temp_w = intval($width * $per); //计算原图缩放后的宽度
     $temp_h = intval($height * $per); //计算原图缩放后的高度
@@ -179,22 +190,22 @@ function resize($src, $w, $h) {
     $im = create($src);
     imagecopyresampled($temp_img, $im, 0, 0, 0, 0, $temp_w, $temp_h, $width, $height);
     if ($per1 > $per2) {
-	imagejpeg($temp_img, $savepath, $quality);
-	imagedestroy($im);
-	return addBg($savepath, $w, $h, "w");
-	//宽度优先，在缩放之后高度不足的情况下补上背景
+        imagejpeg($temp_img, $savepath, $quality);
+        imagedestroy($im);
+        return addBg($savepath, $w, $h, "w");
+        //宽度优先，在缩放之后高度不足的情况下补上背景
     }
     if ($per1 == $per2) {
-	imagejpeg($temp_img, $savepath, $quality);
-	imagedestroy($im);
-	return $savepath;
-	//等比缩放
+        imagejpeg($temp_img, $savepath, $quality);
+        imagedestroy($im);
+        return $savepath;
+        //等比缩放
     }
     if ($per1 < $per2) {
-	imagejpeg($temp_img, $savepath, $quality);
-	imagedestroy($im);
-	return addBg($savepath, $w, $h, "h");
-	//高度优先，在缩放之后宽度不足的情况下补上背景
+        imagejpeg($temp_img, $savepath, $quality);
+        imagedestroy($im);
+        return addBg($savepath, $w, $h, "h");
+        //高度优先，在缩放之后宽度不足的情况下补上背景
     }
 }
 
@@ -217,22 +228,22 @@ function addBg($src, $w, $h, $fisrt = "w") {
     $height = $info[1]; //目标图片高度
     $img = create($src);
     if ($fisrt == "wh") {
-	//等比缩放
-	return $src;
+        //等比缩放
+        return $src;
     } else {
-	if ($fisrt == "w") {
-	    $x = 0;
-	    $y = ($h - $height) / 2; //垂直居中
-	}
-	if ($fisrt == "h") {
-	    $x = ($w - $width) / 2; //水平居中
-	    $y = 0;
-	}
-	imagecopymerge($bg, $img, $x, $y, 0, 0, $width, $height, 100);
-	imagejpeg($bg, $src, $quality);
-	imagedestroy($bg);
-	imagedestroy($img);
-	return $src;
+        if ($fisrt == "w") {
+            $x = 0;
+            $y = ($h - $height) / 2; //垂直居中
+        }
+        if ($fisrt == "h") {
+            $x = ($w - $width) / 2; //水平居中
+            $y = 0;
+        }
+        imagecopymerge($bg, $img, $x, $y, 0, 0, $width, $height, 100);
+        imagejpeg($bg, $src, $quality);
+        imagedestroy($bg);
+        imagedestroy($img);
+        return $src;
     }
 }
 
@@ -260,7 +271,7 @@ function safeHtml($str) {
  */
 function num_format($num) {
     if (!is_numeric($num)) {
-	return false;
+        return false;
     }
     $rvalue = '';
     $num = explode('.', $num); //把整数和小数分开
@@ -270,23 +281,23 @@ function num_format($num) {
     $sr = substr($num[0], $j); //后面的满三位的数取出来
     $i = 0;
     while ($i <= strlen($sr)) {
-	$rvalue = $rvalue . ',' . substr($sr, $i, 3); //三位三位取出再合并，按逗号隔开
-	$i = $i + 3;
+        $rvalue = $rvalue . ',' . substr($sr, $i, 3); //三位三位取出再合并，按逗号隔开
+        $i = $i + 3;
     }
     $rvalue = $sl . $rvalue;
     $rvalue = substr($rvalue, 0, strlen($rvalue) - 1); //去掉最后一个逗号
     $rvalue = explode(',', $rvalue); //分解成数组
     if ($rvalue[0] == 0) {
-	array_shift($rvalue); //如果第一个元素为0，删除第一个元素
+        array_shift($rvalue); //如果第一个元素为0，删除第一个元素
     }
     $rv = $rvalue[0]; //前面不满三位的数
     for ($i = 1; $i < count($rvalue); $i++) {
-	$rv = $rv . ',' . $rvalue[$i];
+        $rv = $rv . ',' . $rvalue[$i];
     }
     if (!empty($rl)) {
-	$rvalue = $rv . '.' . $rl; //小数不为空，整数和小数合并
+        $rvalue = $rv . '.' . $rl; //小数不为空，整数和小数合并
     } else {
-	$rvalue = $rv; //小数为空，只有整数
+        $rvalue = $rv; //小数为空，只有整数
     }
     return $rvalue;
 }

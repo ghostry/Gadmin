@@ -16,6 +16,9 @@ class CityModel extends CommonModel {
         array('admin', 'returnAdmin', 3, 'callback'),
     );
 
+    /**
+     * 取得城市
+     */
     public function get() {
         $r = $this->select();
         foreach ($r as $v) {
@@ -24,6 +27,9 @@ class CityModel extends CommonModel {
         return $arr;
     }
 
+    /**
+     * 取得选择组
+     */
     public function getSelect($where) {
         $r = $this->where($where)->select();
         foreach ($r as $v) {
@@ -32,8 +38,15 @@ class CityModel extends CommonModel {
         return $arr;
     }
 
-    public function getRoleName($ids) {
-        return $this->where(array('id' => array('in', $ids)))->select();
+    /**
+     * 取得其下地区
+     */
+    public function getDistrict($id) {
+        $tmp = $this->table('g_district')->where(array('CityID' => $id))->select();
+        foreach ($tmp as $value) {
+            $tmp1[] = $value['id'];
+        }
+        return $tmp1;
     }
 
 }

@@ -15,36 +15,42 @@ class SystemModel extends CommonModel {
 
     protected $tablenameCN = '系统配置';
     private $names = array(
-	'system' => array('site', 'siteUrl', 'keywords', 'description',),
+        'system' => array('site', 'siteUrl', 'keywords', 'description',),
     );
     private $log_names = array(
-	'system' => '系统配置',
+        'system' => '系统配置',
     );
 
+    /**
+     * 查询
+     */
     public function f($name) {
-	if (!$this->names[$name]) {
-	    return 0;
-	}
-	$where['name'] = array('in', $this->names[$name]);
-	$t = $this->where($where)->select();
-	foreach ($t as $v) {
-	    $r[$v['name']] = $v['value'];
-	}
-	return $r;
+        if (!$this->names[$name]) {
+            return 0;
+        }
+        $where['name'] = array('in', $this->names[$name]);
+        $t = $this->where($where)->select();
+        foreach ($t as $v) {
+            $r[$v['name']] = $v['value'];
+        }
+        return $r;
     }
 
+    /**
+     * 编辑
+     */
     public function e($name) {
-	$post = I('post.');
-	$ok = TRUE;
-	foreach ($this->names[$name] as $value) {
-	    $data['name'] = $value;
-	    $data['value'] = $post[$value];
-	    $ok = $ok && $this->add($data, array(), TRUE);
-	}
-	if ($ok) {
-	    $this->log($name);
-	}
-	return $ok;
+        $post = I('post.');
+        $ok = TRUE;
+        foreach ($this->names[$name] as $value) {
+            $data['name'] = $value;
+            $data['value'] = $post[$value];
+            $ok = $ok && $this->add($data, array(), TRUE);
+        }
+        if ($ok) {
+            $this->log($name);
+        }
+        return $ok;
     }
 
     static public $sqlFilesSize = 0;
@@ -57,13 +63,13 @@ class SystemModel extends CommonModel {
       +----------------------------------------------------------
      */
     public function getAllTableName() {
-	$tabs = M()->query('SHOW TABLE STATUS');
-	$arr = array();
-	foreach ($tabs as $tab) {
-	    $arr[] = $tab['Name'];
-	}
-	unset($tabs);
-	return $arr;
+        $tabs = M()->query('SHOW TABLE STATUS');
+        $arr = array();
+        foreach ($tabs as $tab) {
+            $arr[] = $tab['Name'];
+        }
+        unset($tabs);
+        return $arr;
     }
 
     /**
@@ -74,18 +80,18 @@ class SystemModel extends CommonModel {
       +----------------------------------------------------------
      */
     public function bakupTable($table_list) {
-	M()->execute("SET SQL_QUOTE_SHOW_CREATE = 1"); //1，表示表名和字段名会用``包着的,0 则不用``
-	$outPut = '';
-	if (!is_array($table_list) || empty($table_list)) {
-	    return false;
-	}
-	foreach ($table_list as $table) {
-	    $outPut.="-- 数据库表：{$table} 结构信息\n";
-	    $outPut .= "DROP TABLE IF EXISTS `{$table}`;\n";
-	    $tmp = M()->query("SHOW CREATE TABLE {$table}");
-	    $outPut .= $tmp[0]['Create Table'] . " ;\n\n";
-	}
-	return $outPut;
+        M()->execute("SET SQL_QUOTE_SHOW_CREATE = 1"); //1，表示表名和字段名会用``包着的,0 则不用``
+        $outPut = '';
+        if (!is_array($table_list) || empty($table_list)) {
+            return false;
+        }
+        foreach ($table_list as $table) {
+            $outPut.="-- 数据库表：{$table} 结构信息\n";
+            $outPut .= "DROP TABLE IF EXISTS `{$table}`;\n";
+            $tmp = M()->query("SHOW CREATE TABLE {$table}");
+            $outPut .= $tmp[0]['Create Table'] . " ;\n\n";
+        }
+        return $outPut;
     }
 
     /**
@@ -96,61 +102,61 @@ class SystemModel extends CommonModel {
       +----------------------------------------------------------
      */
     public function getSqlFilesList() {
-	$list = array();
-	$size = 0;
-	$handle = opendir(DatabaseBackDir);
+        $list = array();
+        $size = 0;
+        $handle = opendir(DatabaseBackDir);
 
-	while ($file = readdir($handle)) {
-	    if (preg_match('#\.sql$#i', $file)) {
-		$fp = fopen(DatabaseBackDir . "/$file", 'rb');
-		$bakinfo = fread($fp, 2000);
-		fclose($fp);
-		$detail = explode("\n", $bakinfo);
-		$bk = array();
-		$bk['name'] = $file;
-		$bk['url'] = substr($detail[2], 7);
-		$bk['type'] = substr($detail[3], 8);
-		$bk['description'] = substr($detail[4], 14);
-		$bk['time'] = substr($detail[5], 8);
-		$_size = filesize(DatabaseBackDir . "/$file");
-		$bk['size'] = byteFormat($_size);
-		$size+=$_size;
-		$bk['pre'] = substr($file, 0, strrpos($file, '_'));
-		$bk['num'] = substr($file, strrpos($file, '_') + 1, strrpos($file, '.') - 1 - strrpos($file, '_'));
-		$mtime = filemtime(DatabaseBackDir . "/$file");
-		$list[$mtime][$file] = $bk;
-	    }
-	}
-	closedir($handle);
-	krsort($list); //按备份时间倒序排列
-	$newArr = array();
-	foreach ($list as $k => $array) {
-	    ksort($array); //按备份文件名称顺序排列
-	    foreach ($array as $arr) {
-		$newArr[] = $arr;
-	    }
-	}
-	unset($list);
-	return array("list" => $newArr, "size" => byteFormat($size));
+        while ($file = readdir($handle)) {
+            if (preg_match('#\.sql$#i', $file)) {
+                $fp = fopen(DatabaseBackDir . "/$file", 'rb');
+                $bakinfo = fread($fp, 2000);
+                fclose($fp);
+                $detail = explode("\n", $bakinfo);
+                $bk = array();
+                $bk['name'] = $file;
+                $bk['url'] = substr($detail[2], 7);
+                $bk['type'] = substr($detail[3], 8);
+                $bk['description'] = substr($detail[4], 14);
+                $bk['time'] = substr($detail[5], 8);
+                $_size = filesize(DatabaseBackDir . "/$file");
+                $bk['size'] = byteFormat($_size);
+                $size+=$_size;
+                $bk['pre'] = substr($file, 0, strrpos($file, '_'));
+                $bk['num'] = substr($file, strrpos($file, '_') + 1, strrpos($file, '.') - 1 - strrpos($file, '_'));
+                $mtime = filemtime(DatabaseBackDir . "/$file");
+                $list[$mtime][$file] = $bk;
+            }
+        }
+        closedir($handle);
+        krsort($list); //按备份时间倒序排列
+        $newArr = array();
+        foreach ($list as $k => $array) {
+            ksort($array); //按备份文件名称顺序排列
+            foreach ($array as $arr) {
+                $newArr[] = $arr;
+            }
+        }
+        unset($list);
+        return array("list" => $newArr, "size" => byteFormat($size));
     }
 
     public function getZipFilesList() {
-	$list = array();
-	$size = 0;
-	$handle = opendir(DatabaseBackDir . "Zip/");
+        $list = array();
+        $size = 0;
+        $handle = opendir(DatabaseBackDir . "Zip/");
 
-	while ($file = readdir($handle)) {
-	    if ($file != "." && $file != "..") {
-		$tem = array();
-		$tem['file'] = $file; //  checkCharset($file);
-		$_size = filesize(DatabaseBackDir . "Zip/$file");
-		$tem['size'] = byteFormat($_size);
-		$tem['time'] = date("Y-m-d H:i:s", filectime(DatabaseBackDir . "Zip/$file"));
-		$size+=$_size;
-		$list[] = $tem;
-	    }
-	}
-	return array("list" => $list, "size" => byteFormat($size));
+        while ($file = readdir($handle)) {
+            if ($file != "." && $file != "..") {
+                $tem = array();
+                $tem['file'] = $file; //  checkCharset($file);
+                $_size = filesize(DatabaseBackDir . "Zip/$file");
+                $tem['size'] = byteFormat($_size);
+                $tem['time'] = date("Y-m-d H:i:s", filectime(DatabaseBackDir . "Zip/$file"));
+                $size+=$_size;
+                $list[] = $tem;
+            }
+        }
+        return array("list" => $list, "size" => byteFormat($size));
     }
 
     /**
@@ -166,19 +172,19 @@ class SystemModel extends CommonModel {
       +----------------------------------------------------------
      */
     public function zip($files, $filename, $outDir = WEB_CACHE_PATH, $path = DatabaseBackDir) {
-	$zip = new ZipArchive;
-	makeDir($outDir);
-	//$res = $zip->open($outDir . "\\" . $filename, ZipArchive::CREATE);
-	$res = $zip->open($outDir . $filename, ZipArchive::CREATE);
-	if ($res === TRUE) {
-	    foreach ($files as $file) {
-		$zip->addFile($path . $file, str_replace('/', '', $file));
-	    }
-	    $zip->close();
-	    return TRUE;
-	} else {
-	    return FALSE;
-	}
+        $zip = new \ZipArchive;
+        makeDir($outDir);
+        //$res = $zip->open($outDir . "\\" . $filename, ZipArchive::CREATE);
+        $res = $zip->open($outDir . $filename, \ZipArchive::CREATE);
+        if ($res === TRUE) {
+            foreach ($files as $file) {
+                $zip->addFile($path . $file, str_replace('/', '', $file));
+            }
+            $zip->close();
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     /**
@@ -192,24 +198,30 @@ class SystemModel extends CommonModel {
       +----------------------------------------------------------
      */
     function unzip($file, $outDir = DatabaseBackDir) {
-	$zip = new ZipArchive();
-	if ($zip->open(DatabaseBackDir . "Zip/" . $file) !== TRUE)
-	    return FALSE;
-	$zip->extractTo($outDir);
-	$zip->close();
-	return TRUE;
+        $zip = new \ZipArchive();
+        if ($zip->open(DatabaseBackDir . "Zip/" . $file) !== TRUE)
+            return FALSE;
+        $zip->extractTo($outDir);
+        $zip->close();
+        return TRUE;
     }
 
+    /**
+     * 检查文件是否在使用
+     */
     public function findfile($url) {
-	$where['value'] = array('like', $url);
-	$r = $this->where($where)->count();
-	//echo $this->_sql();
-	return $r;
+        $where['value'] = array('like', $url);
+        $r = $this->where($where)->count();
+        //echo $this->_sql();
+        return $r;
     }
 
+    /**
+     * 清空日志
+     */
     public function qingkong() {
-	$this->execute('truncate table  `g_logs`');
-	$this->log('清空日志');
+        $this->execute('truncate table  `g_logs`');
+        $this->log('清空日志');
     }
 
 }

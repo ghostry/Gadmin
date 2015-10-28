@@ -13,7 +13,9 @@ use Think\Model;
 
 class PageModel extends CommonModel {
 
-//查
+    /**
+     * 查
+     */
     public function f($options = '', $where = array()) {
         $where['type'] = $options;
         return $this->where($where)->find();

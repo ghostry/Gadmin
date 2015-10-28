@@ -14,27 +14,29 @@ class DistrictModel extends CommonModel {
 
     protected $tablenameCN = '县区';
     protected $_auto = array(
-	array('admin', 'returnAdmin', 3, 'callback'),
+        array('admin', 'returnAdmin', 3, 'callback'),
     );
 
+    /**
+     * 取县区
+     */
     public function get() {
-	$r = $this->select();
-	foreach ($r as $v) {
-	    $arr[$v['id']] = $v['name'];
-	}
-	return $arr;
+        $r = $this->select();
+        foreach ($r as $v) {
+            $arr[$v['id']] = $v['name'];
+        }
+        return $arr;
     }
 
+    /**
+     * 取得选择数组
+     */
     public function getSelect($where) {
-	$r = $this->where($where)->select();
-	foreach ($r as $v) {
-	    $arr[] = array($v['id'], $v['name']);
-	}
-	return $arr;
-    }
-
-    public function getRoleName($ids) {
-	return $this->where(array('id' => array('in', $ids)))->select();
+        $r = $this->where($where)->select();
+        foreach ($r as $v) {
+            $arr[] = array($v['id'], $v['name']);
+        }
+        return $arr;
     }
 
 }

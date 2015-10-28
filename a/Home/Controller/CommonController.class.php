@@ -23,6 +23,9 @@ class CommonController extends Controller {
         $this->SystemInfo = D('System')->f('system');
     }
 
+    /**
+     * ajax返回
+     */
     protected function r($info, $status = 0, $url = '') {
         if (!is_array($info)) {
             $this->ajaxReturn(array('status' => $status, 'info' => $info, 'url' => $url));

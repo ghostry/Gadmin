@@ -15,26 +15,34 @@ class PageModel extends CommonModel {
 
     protected $tablenameCN = '单页';
     protected $_auto = array(
-	array('admin', 'returnAdmin', 3, 'callback'),
+        array('admin', 'returnAdmin', 3, 'callback'),
     );
 
-//查
+    /**
+     * 查
+     */
     public function f($options = '', $where = array()) {
-	$where['type'] = $options;
-	return $this->where($where)->find();
+        $where['type'] = $options;
+        return $this->where($where)->find();
     }
 
+    /**
+     * 编辑
+     */
     public function e($data = '', $options = array()) {
-	$where['type'] = $data;
-	$ok = $this->where($where)->save();
-	return $ok;
+        $where['type'] = $data;
+        $ok = $this->where($where)->save();
+        return $ok;
     }
 
+    /**
+     * 检查文件是否使用中
+     */
     public function findfile($url) {
-	$where['text'] = array('like', "%$url%");
-	$r = $this->where($where)->count();
-	//echo $this->_sql();
-	return $r;
+        $where['text'] = array('like', "%$url%");
+        $r = $this->where($where)->count();
+        //echo $this->_sql();
+        return $r;
     }
 
 }
