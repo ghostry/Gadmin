@@ -42,7 +42,7 @@ class AdminModel extends CommonModel {
      */
     public function login() {
         $where['email'] = I('post.email');
-        $where['password'] = $this->createPassword(I('post.password'));
+        $where['password'] = createPassword(I('post.password'));
         $u = $this->where($where)->find();
         if ($u) {
             if ($u['status']) {

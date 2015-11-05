@@ -5,14 +5,14 @@
  *
  */
 //调试模式
-define('APP_DEBUG', 0);
+define('APP_DEBUG', 1);
 //URL模式，0，普通，1,PATHINFO，2,伪静态，3,兼容
 define('URL_MODUS', 2);
 //定义数据库参数
 define('MYSQL_DB_HOST', 'localhost');
 define('MYSQL_DB_PORT', 3306);
 define('MYSQL_DB_USERNAME', 'a');
-define('MYSQL_DB_PASSWORD', 'teru6usyz');
+define('MYSQL_DB_PASSWORD', 'pezuzubub');
 define('MYSQL_DB_CHARSET', 'utf8');
 define('MYSQL_DB_DATABASE', 'zadmin_a');
 //微信api
@@ -33,5 +33,4 @@ define('ALL_DATA_PATH', 'Data/');
 
 define('MYSQL_DB_PREFIX', 'g_');
 define('MYSQL_DB_TYPE', 'mysqli');
-
 
