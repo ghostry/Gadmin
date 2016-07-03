@@ -23,6 +23,7 @@ php_value max_input_time 300
     AddOutputFilterByType DEFLATE application/html
     AddOutputFilterByType DEFLATE application/javascript
     AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilter DEFLATE css
 </IfModule>
 #缓存控制1年和3天
 <IfModule mod_expires.c>
