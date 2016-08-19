@@ -14,12 +14,14 @@ use Think\Model;
 class SystemModel extends CommonModel {
 
     protected $tablenameCN = '系统配置';
-    private $names = array(
-        'system' => array('site', 'siteUrl', 'keywords', 'description',),
-    );
-    private $log_names = array(
-        'system' => '系统配置',
-    );
+    private $names;
+    private $log_names;
+
+    public function __construct($name = '', $tablePrefix = '', $connection = '') {
+        parent::__construct($name, $tablePrefix, $connection);
+        $this->names = C('System_names');
+        $this->log_names = C('LogNames');
+    }
 
     /**
      * 查询

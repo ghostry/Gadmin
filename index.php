@@ -1,25 +1,30 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2014 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 // 应用入口文件
+/**
+ * 以下内容尽量不编辑
+ */
 // 检测PHP环境
 if (version_compare(PHP_VERSION, '5.3.0', '<'))
     die('require PHP > 5.3.0 !');
 
 include_once 'config.ini.php';
 
+// 定义应用目录
+define('APP_PATH', './a/');
+//框架目录
+define('ThinkPHP_SYSTEM_PATH', 't/');
+define('MYSQL_DB_PREFIX', 'g_');
+define('MYSQL_DB_TYPE', 'mysqli');
+
 define('HTML_PATH', RUNTIME_PATH . 'Html/');
 define('DATA_PATH', ALL_DATA_PATH . 'Data/');
 define('DATABASE_PATH', ALL_DATA_PATH . 'Database/');
 define('UPLOAD_PATH', ALL_DATA_PATH . 'Upload/');
+
+/**
+ * 配置结束，进行初始化
+ */
 //检查目录存在，不存在创建
 if (!is_dir(RUNTIME_PATH)) {
     mkdir(RUNTIME_PATH);
@@ -65,10 +70,6 @@ if (APP_DEBUG) {
     ini_set('display_errors', 0);
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
 }
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-cache, must-revalidate");
-header("Pramga: no-cache");
 // 引入ThinkPHP入口文件
 require ThinkPHP_SYSTEM_PATH . 'ThinkPHP.php';
 

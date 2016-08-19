@@ -25,6 +25,7 @@ class QueueController extends Controller {
      * 执行
      */
     public function run() {
+        D('Jobs')->run();
         $fen = date('YmdHi');
         while ($fen == date('YmdHi')) {
             $this->model->run();
